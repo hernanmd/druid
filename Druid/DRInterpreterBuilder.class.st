@@ -3,7 +3,6 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'primitiveTable',
-		'targetInterpreter',
 		'interpreterClass'
 	],
 	#category : #'Druid-InterpreterBuilder'
@@ -34,6 +33,12 @@ DRInterpreterBuilder >> interpreterClass [
 
 	^ interpreterClass
 		ifNil: [ interpreterClass := self defaultInterpreterClass ]
+]
+
+{ #category : #accessing }
+DRInterpreterBuilder >> interpreterClass: anObject [
+
+	interpreterClass := anObject
 ]
 
 { #category : #'accessing - interpreters' }

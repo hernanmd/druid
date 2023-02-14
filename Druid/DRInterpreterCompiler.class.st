@@ -75,10 +75,9 @@ DRInterpreterCompiler class >> fromInterpreter: anInterpreterBuilder compilerCla
 ]
 
 { #category : #'accessing - primitives' }
-DRInterpreterCompiler >> addPrimitive: aString to: aDRCompilationUnit [
+DRInterpreterCompiler >> addPrimitive: anObject to: aDRCompilationUnit [
 
-	aString = 0 ifFalse: [
-		aDRCompilationUnit addPrimitive: (self newPrimitive: aString) ]
+	anObject asCompilationUnitIn: self for: aDRCompilationUnit
 ]
 
 { #category : #'accessing - primitives' }
@@ -263,7 +262,7 @@ DRInterpreterCompiler >> newMemory [
 ]
 
 { #category : #'accessing - primitives' }
-DRInterpreterCompiler >> newPrimitive: aString [
+DRInterpreterCompiler >> newNamedPrimitive: aString [
 	" Answer a new primitive object with its metadata and CFG generated "
 
 	^ DRPrimitiveObject new
@@ -271,6 +270,32 @@ DRInterpreterCompiler >> newPrimitive: aString [
 		sourceSelector: aString;
 		cfg: (self compilerCompiler buildIR: aString);
 		argumentCount: (self compilerCompiler numberOfArgumentsFor: aString);
+		mayCallback: (self primitiveMayCallback: aString);
+		yourself
+]
+
+{ #category : #'accessing - primitives' }
+DRInterpreterCompiler >> newNumberedPrimitive: aString [
+	" Answer a new primitive object with its metadata and CFG generated "
+
+	^ DRPrimitiveObject new
+		primitiveNumber: (self primitiveNumberOf: aString);
+		sourceSelector: aString;
+		cfg: (self compilerCompiler buildIR: aString);
+		argumentCount: (self compilerCompiler numberOfArgumentsFor: aString);
+		mayCallback: (self primitiveMayCallback: aString);
+		yourself
+]
+
+{ #category : #'accessing - primitives' }
+DRInterpreterCompiler >> newPrimitive: aString [
+	" Answer a new primitive object with its metadata and CFG generated "
+
+	^ DRPrimitiveObject new
+		primitiveNumber: (self primitiveNumberOf: aString);
+		sourceSelector: aString;
+		cfg: (self compilerCompiler buildIR: aString);
+		argumentCount: 0;
 		mayCallback: (self primitiveMayCallback: aString);
 		yourself
 ]
