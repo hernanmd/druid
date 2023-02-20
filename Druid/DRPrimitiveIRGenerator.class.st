@@ -23,6 +23,9 @@ DRPrimitiveIRGenerator >> initialize [
 DRPrimitiveIRGenerator >> initializeSpecialCases [
 
 	super initializeSpecialCases.
+	
+	variableSpecialCases at: #memoryManager put: #interpretMemoryManagerWith:.
+
 	variableSpecialCases at: #primFailCode put: #interpretPrimFailCodeWith:.
 ]
 
@@ -49,6 +52,12 @@ DRPrimitiveIRGenerator >> interpretFreeStartAssignmentWith: aRBAssignmentNode [
 				  byteSize asDRValue.
 				  valueToStore.
 				  DRInterpreterReference freeStartAddress }
+]
+
+{ #category : #accessing }
+DRPrimitiveIRGenerator >> interpretMemoryManagerWith: aRBVariableNode [ 
+
+
 ]
 
 { #category : #'special cases' }

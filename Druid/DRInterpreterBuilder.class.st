@@ -18,7 +18,7 @@ DRInterpreterBuilder >> basicNew [
 DRInterpreterBuilder >> defaultInterpreterClass [
 	"Answer a default <StackInterpreter> class containing a method with the interpreter primitives "
 
-	^ self interpreterClassArithmeticPrimitives
+	^ self interpreterClassAllPrimitives
 ]
 
 { #category : #initialization }
@@ -39,6 +39,12 @@ DRInterpreterBuilder >> interpreterClass [
 DRInterpreterBuilder >> interpreterClass: anObject [
 
 	interpreterClass := anObject
+]
+
+{ #category : #'accessing - interpreters' }
+DRInterpreterBuilder >> interpreterClassAllPrimitives [
+
+	^ DRBasicCogInterpreterAllPrimitives
 ]
 
 { #category : #'accessing - interpreters' }

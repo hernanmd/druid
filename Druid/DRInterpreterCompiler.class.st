@@ -23,6 +23,48 @@ Class {
 	#category : #'Druid-InterpreterBuilder'
 }
 
+{ #category : #'instance creation' }
+DRInterpreterCompiler class >> buildSources: aClassSymbol [
+
+	| srcTree srcTreeFileRef platformsTree |
+
+	srcTree := 'druid64src'.
+	platformsTree := 'platforms'.
+
+	srcTreeFileRef := srcTree asFileReference.
+	srcTreeFileRef exists
+		ifFalse: [ srcTreeFileRef ensureCreateDirectory ]
+		ifTrue: [ (srcTreeFileRef / platformsTree) exists
+			ifFalse: [ (srcTreeFileRef / platformsTree) ensureCreateDirectory ] ].
+		
+	[ (VMMaker
+			makerFor: CoInterpreter
+			and: aClassSymbol
+			with: #(ObjectMemory Spur64BitCoMemoryManager
+                bytecodeTableInitializer initializeBytecodeTableForSistaV1)
+			to: srcTree
+			platformDir: (srcTreeFileRef / platformsTree) fullName
+			including: #()
+			configuration: VMMakerConfiguration)
+				stopOnErrors: true;
+				internal: #() external: #(FilePlugin SurfacePlugin FloatArrayPlugin);
+				generateInterpreterFile;
+				generateCogitFiles;
+				generateExternalPlugins ] valueSupplyingAnswer: true.
+]
+
+{ #category : #'instance creation' }
+DRInterpreterCompiler class >> exampleGenerateJITClass [
+
+	self generateJITClass: #JITeado
+]
+
+{ #category : #'instance creation' }
+DRInterpreterCompiler class >> exampleGenerateSources [
+
+	self buildSources: #JITeado
+]
+
 { #category : #examples }
 DRInterpreterCompiler class >> examplePrimitivesCollector [
 	<example>
@@ -74,6 +116,22 @@ DRInterpreterCompiler class >> fromInterpreter: anInterpreterBuilder compilerCla
 		yourself
 ]
 
+{ #category : #'instance creation' }
+DRInterpreterCompiler class >> generateJITClass: aClassSymbol [
+
+	| interpreterCompiler jitPrimitivesClass |
+
+	"Since the VMMaker overwrite InitializationOptions..."
+	VMClass resetInitializationOptions.
+	VMClass initialize.
+
+	jitPrimitivesClass := aClassSymbol.
+	Smalltalk globals removeClassNamed: jitPrimitivesClass.
+	interpreterCompiler := self fromInterpreter: DRInterpreterBuilder new.
+	interpreterCompiler generateIRAndCompileIn: jitPrimitivesClass.
+	(Smalltalk globals at: jitPrimitivesClass) browse
+]
+
 { #category : #'accessing - primitives' }
 DRInterpreterCompiler >> addPrimitive: anObject to: aDRCompilationUnit [
 
@@ -85,7 +143,8 @@ DRInterpreterCompiler >> addPrimitivesTo: aCompilationUnit [
 	"Iterate over the receiver's interpreter (assumed to contain primitive methods) and add them to compilationUnit"
 
 	self interpreterPrimitiveTable
-		do: [ : prim | self addPrimitive: prim to: aCompilationUnit ]
+		do: [ : prim | 
+			prim ifNotNil: [ self addPrimitive: prim to: aCompilationUnit ] ]
 		displayingProgress: 'Adding primitives'
 ]
 

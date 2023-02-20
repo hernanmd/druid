@@ -1,6 +1,11 @@
 Extension { #name : #Integer }
 
 { #category : #'*Druid' }
+Integer >> asCompilationUnitIn: aDRInterpreterCompiler for: aDRCompilationUnit [ 
+
+]
+
+{ #category : #'*Druid' }
 Integer >> maskOfBytes [
 
 	| res |

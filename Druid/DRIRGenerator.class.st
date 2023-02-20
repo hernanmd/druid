@@ -301,7 +301,7 @@ DRIRGenerator >> initializeSpecialCases [
 	variableSpecialCases at: #nilObj put: #interpretNilObjectWith:.
 	variableSpecialCases at: #falseObj put: #interpretFalseObjectWith:.
 	variableSpecialCases at: #trueObj put: #interpretTrueObjectWith:.
-	
+		
 	variableSpecialCases at: #freeStart put: #interpretFreeStartWith:.
 	variableSpecialCases at: #scavengeThreshold put: #interpretScavengeThresholdWith:.
 	variableSpecialCases at: #argumentCount put: #interpretArgumentCountWith:.
