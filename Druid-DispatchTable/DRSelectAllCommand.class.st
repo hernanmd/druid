@@ -27,6 +27,5 @@ DRSelectAllCommand >> execute [
 	" Select all entries items"
 
 	self application selectedEntries: self entriesTable items.
-	self entriesTable refresh.
-	self context updateStatusBar
+	self updateEntries
 ]

@@ -20,6 +20,10 @@ DRDispatchTableBuilderUI class >> buildBrowsingOperationsGroupWith: aDRDispatchT
 			forSpecWithIconNamed: #class
 			shortcutKey: 'B' asShortcut)
 				context: aDRDispatchTableBuilderUI);
+		register: ((DRCTranspileCommand
+			forSpecWithIconNamed: #smallCogInitialState
+			shortcutKey: 'C' asShortcut)
+				context: aDRDispatchTableBuilderUI);
 		beDisplayedAsGroup;
 		yourself
 ]

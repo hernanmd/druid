@@ -1,34 +1,39 @@
 Class {
-	#name : #DRBrowseMethodCommand,
+	#name : #DRBuildDispatchTableCommand,
 	#superclass : #DRDispatchTableMenuCommand,
 	#category : #'Druid-DispatchTable-Commands'
 }
 
 { #category : #'accessing - defaults' }
-DRBrowseMethodCommand class >> defaultDescription [
+DRBuildDispatchTableCommand class >> defaultDescription [
 
 	^ 'Browse entry'
 ]
 
 { #category : #'accessing - defaults' }
-DRBrowseMethodCommand class >> defaultIconName [
+DRBuildDispatchTableCommand class >> defaultIconName [
 
 	^ #glamorousBrowse
 ]
 
 { #category : #'accessing - defaults' }
-DRBrowseMethodCommand class >> defaultName [
+DRBuildDispatchTableCommand class >> defaultName [
 
 	^ 'Browse'
 ]
 
+{ #category : #testing }
+DRBuildDispatchTableCommand >> canBeExecuted [
+	"Receiver can be executed if there are entries selected"
+
+	^ self application selectedEntries notEmpty
+]
+
 { #category : #executing }
-DRBrowseMethodCommand >> execute [
+DRBuildDispatchTableCommand >> execute [
 	"Private - Open a Browser on the selected method"
 
 	self stBrowser
 		openOnClass: self selectedEntry methodClass
 		selector: self selectedEntry selector
-
-
 ]
